@@ -59,7 +59,7 @@ public class UserDAO implements DAO<Users, String> {
     enum SQLUser {
         GET("SELECT * FROM users  WHERE email = (?)"),
         INSERT("INSERT INTO mono_post.users (users_id, fio, email, phone_number) VALUES (DEFAULT, (?), (?), (?))"),
-        DELETE("DELETE FROM users WHERE id = (?) AND login = (?) AND password = (?) RETURNING id"),
+        DELETE("DELETE FROM users WHERE fio = (?) AND email = (?)"),
         UPDATE("UPDATE users SET password = (?) WHERE id = (?) RETURNING id");
 
         String QUERY;
