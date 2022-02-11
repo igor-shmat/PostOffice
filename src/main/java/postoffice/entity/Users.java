@@ -1,36 +1,58 @@
 package postoffice.entity;
 
-import lombok.Data;
-import lombok.NonNull;
-
-import java.util.List;
-import java.util.Objects;
-
-@Data
 public class Users {
     private Long usersId;
-    @NonNull
-    private String fio;
-    @NonNull
+    private String first_name;
+    private String second_name;
+    private String patronymic_name;
     private String phoneNumber;
-    @NonNull
     private String email;
-    private List<SendingParcel> sendingParcels;
 
-    public Users() {
+    public Long getUsersId() {
+        return usersId;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return fio.equals(users.fio) && phoneNumber.equals(users.phoneNumber);
+    public void setUsersId(Long usersId) {
+        this.usersId = usersId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(fio, phoneNumber);
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getSecond_name() {
+        return second_name;
+    }
+
+    public void setSecond_name(String second_name) {
+        this.second_name = second_name;
+    }
+
+    public String getPatronymic_name() {
+        return patronymic_name;
+    }
+
+    public void setPatronymic_name(String patronymic_name) {
+        this.patronymic_name = patronymic_name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

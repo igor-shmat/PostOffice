@@ -1,12 +1,22 @@
 package postoffice.entity;
 
-import lombok.Data;
-
-@Data
 public class Office {
     private Long officeId;
     private String description;
 
-    public Office() {
+    public Long getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(Long officeId) {
+        this.officeId = officeId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

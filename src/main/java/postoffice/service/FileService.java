@@ -15,7 +15,7 @@ public class FileService {
         if (is == null) {
             throw new FileNotFoundException("!!!File not found!!!");
         }
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))){
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             int index = 0;
             String line = bufferedReader.readLine();
             while (line != null) {

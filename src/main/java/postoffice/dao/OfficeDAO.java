@@ -1,6 +1,5 @@
 package postoffice.dao;
 
-import lombok.NonNull;
 import postoffice.entity.Office;
 
 import java.sql.Connection;
@@ -9,16 +8,14 @@ import java.sql.SQLException;
 
 
 public class OfficeDAO implements DAO<Office, String> {
-    @NonNull
-    private Connection connection;
 
-    public OfficeDAO(@NonNull Connection connection) {
-        this.connection = connection;
+
+    public OfficeDAO(Connection connect) {
     }
 
     @Override
     public void save(Office office) {
-        try (PreparedStatement statement = connection.prepareStatement(OfficeDAO.SQLOffice.INSERT.QUERY)) {
+        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(OfficeDAO.SQLOffice.INSERT.QUERY)) {
             statement.setString(1, office.getDescription());
             statement.executeUpdate();
         } catch (SQLException e) {
