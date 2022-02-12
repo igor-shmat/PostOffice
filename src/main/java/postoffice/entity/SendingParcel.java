@@ -10,9 +10,9 @@ public class SendingParcel {
     private Office senderOffice;
     private Office receiverOffice;
     private String receiverPhoneNumber;
-    private String first_name;
-    private String second_name;
-    private String patronymic_name;
+    private String receiver_first_name;
+    private String receiver_second_name;
+    private String receiver_patronymic_name;
     private ParcelStatus parcelStatus;
     private LocalDateTime createDate;
     private LocalDateTime updateStatus;
@@ -57,28 +57,28 @@ public class SendingParcel {
         this.receiverPhoneNumber = receiverPhoneNumber;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getReceiver_first_name() {
+        return receiver_first_name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setReceiver_first_name(String receiver_first_name) {
+        this.receiver_first_name = receiver_first_name;
     }
 
-    public String getSecond_name() {
-        return second_name;
+    public String getReceiver_second_name() {
+        return receiver_second_name;
     }
 
-    public void setSecond_name(String second_name) {
-        this.second_name = second_name;
+    public void setReceiver_second_name(String receiver_second_name) {
+        this.receiver_second_name = receiver_second_name;
     }
 
-    public String getPatronymic_name() {
-        return patronymic_name;
+    public String getReceiver_patronymic_name() {
+        return receiver_patronymic_name;
     }
 
-    public void setPatronymic_name(String patronymic_name) {
-        this.patronymic_name = patronymic_name;
+    public void setReceiver_patronymic_name(String receiver_patronymic_name) {
+        this.receiver_patronymic_name = receiver_patronymic_name;
     }
 
     public ParcelStatus getParcelStatus() {

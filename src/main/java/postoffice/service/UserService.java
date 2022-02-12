@@ -10,11 +10,14 @@ import java.sql.SQLException;
 
 public class UserService {
     public void registration(Users users) {
-        try {
-            Connection connection;
-            DAO<Users, String> dao = new UserDAO(connection = ConnectionToDB.connect());
-            dao.save(users);
-            connection.close();
+        try(Connection connection = ConnectionToDB.connect()) {
+            DAO<Users> dao = new UserDAO(connection);
+            if (dao.read(users).getUsersId() == null) {
+                dao.create(users);
+                connection.close();
+                System.out.println("User : " + "->" + users.getEmail() +  "<-" + " successfully registered!");
+            } else
+                System.out.println("User with email : " + "->" + users.getEmail() + "<-" + " already exists!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

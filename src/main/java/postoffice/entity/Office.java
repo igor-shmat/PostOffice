@@ -2,6 +2,7 @@ package postoffice.entity;
 
 public class Office {
     private Long officeId;
+    private String address;
     private String description;
 
     public Long getOfficeId() {
@@ -10,6 +11,14 @@ public class Office {
 
     public void setOfficeId(Long officeId) {
         this.officeId = officeId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDescription() {

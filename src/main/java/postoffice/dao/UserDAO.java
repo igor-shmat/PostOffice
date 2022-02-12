@@ -7,13 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDAO implements DAO<Users, String> {
+public class UserDAO implements DAO<Users> {
 
     public UserDAO(Connection connection) {
     }
 
     @Override
-    public void save(Users users) {
+    public void create(Users users) {
         try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(UserDAO.SQLUser.INSERT.QUERY)) {
             statement.setString(1, users.getFirst_name());
             statement.setString(2, users.getSecond_name());
@@ -28,10 +28,11 @@ public class UserDAO implements DAO<Users, String> {
     }
 
     @Override
-    public Users get(String email) {
+    public Users read(Users users) {
         Users result = new Users();
         try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.GET.QUERY)) {
-            statement.setString(1, email);
+            statement.setString(1, users.getEmail());
+            statement.setString(2, users.getPhoneNumber());
             final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 result.setUsersId(rs.getLong("users_id"));
@@ -44,22 +45,34 @@ public class UserDAO implements DAO<Users, String> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     @Override
-    public void update(Users model) {
+    public void update(Users users) {
+        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.UPDATE.QUERY)) {
+            statement.setString(1, users.getPhoneNumber());
+            statement.setLong(2, users.getUsersId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void delete(Users model) {
+    public void delete(Users users) {
+        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.DELETE.QUERY)) {
+            statement.setLong(1, users.getUsersId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     enum SQLUser {
-        GET("SELECT * FROM users  WHERE email = (?)"),
         INSERT("INSERT INTO mono_post.users (users_id, first_name, second_name, patronymic_name, email, phone_number) VALUES (DEFAULT, (?), (?), (?), (?), (?))"),
-        DELETE("DELETE FROM users WHERE fio = (?) AND email = (?)"),
-        UPDATE("UPDATE users SET password = (?) WHERE id = (?) RETURNING id");
+        GET("SELECT * FROM mono_post.users  WHERE email = (?) and phone_number = (?)"),
+        UPDATE("UPDATE mono_post.users SET phone_number = (?) WHERE users_id = (?)"),
+        DELETE("DELETE FROM mono_post.users WHERE users_id = (?)");
 
         String QUERY;
 

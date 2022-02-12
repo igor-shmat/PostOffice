@@ -1,9 +1,9 @@
 package postoffice.dao;
 
-public interface DAO<Entity, Key> {
-    void save(Entity entity);
+public interface DAO<Entity> {
+    void create(Entity entity);
 
-    Entity get(Key key);
+    Entity read(Entity entity);
 
     void update(Entity entity);
 
