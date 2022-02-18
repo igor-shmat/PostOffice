@@ -5,6 +5,13 @@ public class Office {
     private String address;
     private String description;
 
+    public Office() {
+    }
+
+    public Office(Long officeId) {
+        this.officeId = officeId;
+    }
+
     public Long getOfficeId() {
         return officeId;
     }

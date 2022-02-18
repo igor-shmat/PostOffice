@@ -1,6 +1,7 @@
 package postoffice.service;
 
 import postoffice.converter.FileToOfficeConverter;
+import postoffice.converter.FileToSendingParcelConverter;
 import postoffice.converter.FileToUserConverter;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ public class MainCommandService {
     public void mapCommand(ArrayList<ArrayList<String>> commands) {
         FileToUserConverter fileToUserConverter = new FileToUserConverter();
         FileToOfficeConverter fileToOfficeConverter = new FileToOfficeConverter();
+        FileToSendingParcelConverter fileToSendingParcelConverter = new FileToSendingParcelConverter();
+        SendingParcelService sendingParcelService = new SendingParcelService();
         UserService userService = new UserService();
         OfficeService officeService = new OfficeService();
         for (ArrayList<String> commandsList : commands) {
@@ -26,6 +29,7 @@ public class MainCommandService {
                     }
 
                     case "CREATE_NEW_PARCEL" -> {
+                        sendingParcelService.sending(fileToSendingParcelConverter.convert(commandsList));
                     }
                     default -> {
                         System.out.println("_____________________________________________________________________________________________________");

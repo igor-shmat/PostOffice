@@ -2,6 +2,7 @@ package postoffice;
 
 import postoffice.service.FileService;
 import postoffice.service.MainCommandService;
+import postoffice.service.ThreadParcelService;
 
 import java.util.ArrayList;
 
@@ -11,5 +12,7 @@ public class Main {
         MainCommandService mainCommandService = new MainCommandService();
         ArrayList<ArrayList<String>> commands = fileService.readFile();
         mainCommandService.mapCommand(commands);
+        Thread thread = new ThreadParcelService();
+        thread.start();
     }
 }

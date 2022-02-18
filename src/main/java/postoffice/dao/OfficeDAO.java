@@ -30,7 +30,7 @@ public class OfficeDAO implements DAO<Office> {
         Office result = new Office();
         try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(OfficeDAO.SQLOffice.GET.QUERY)) {
             statement.setString(1, office.getAddress());
-            final ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 result.setOfficeId(rs.getLong("office_id"));
                 result.setAddress(rs.getString("address"));

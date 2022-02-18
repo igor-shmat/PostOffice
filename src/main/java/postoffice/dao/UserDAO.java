@@ -2,10 +2,12 @@ package postoffice.dao;
 
 import postoffice.entity.Users;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserDAO implements DAO<Users> {
 
@@ -33,7 +35,7 @@ public class UserDAO implements DAO<Users> {
         try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.GET.QUERY)) {
             statement.setString(1, users.getEmail());
             statement.setString(2, users.getPhoneNumber());
-            final ResultSet rs = statement.executeQuery();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 result.setUsersId(rs.getLong("users_id"));
                 result.setPhoneNumber(rs.getString("phone_number"));

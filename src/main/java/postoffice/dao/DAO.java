@@ -1,5 +1,8 @@
 package postoffice.dao;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public interface DAO<Entity> {
     void create(Entity entity);
 
