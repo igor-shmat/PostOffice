@@ -3,24 +3,31 @@ package postoffice.service;
 import postoffice.dao.ConnectionToDB;
 import postoffice.dao.DAO;
 import postoffice.dao.OfficeDAO;
+import postoffice.dao.UserDAO;
 import postoffice.entity.Office;
+import postoffice.entity.Users;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OfficeService {
-    public void newOffice(Office office) {
-
-        try (Connection connection = ConnectionToDB.connect()){
+    public void newOffice(ArrayList<Office> offices) {
+        try (Connection connection = ConnectionToDB.connect()) {
             DAO<Office> dao = new OfficeDAO(connection);
-            if (dao.read(office).getOfficeId() == null) {
-                dao.create(office);
-                connection.close();
-                System.out.println("Office : " + "->" + office.getAddress() + "<-" + " successfully added!");
-            } else
-                System.out.println("Office with Address : " + "->" + office.getAddress() + "<-" + " already exists!");
+            ArrayList<Office> clearUsers = new ArrayList<>();
+            for (Office office : offices) {
+                if (dao.read(office).getOfficeId() == null) {
+                    clearUsers.add(office);
+                } else
+                    System.out.println("User with email : " + "->" + office.getAddress() + "<-" + " already exists!");
+            }
+            if (!clearUsers.isEmpty()) {
+                dao.create(clearUsers);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }

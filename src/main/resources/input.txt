@@ -1,10 +1,10 @@
-REGISTRATION#Перепелкин#Александр#Гришин#0661122333#zzz@gmail.com
-REGISTRATION#Стрельников#Владимир#Петров#0661122444#xxx@gmail.com
-REGISTRATION#Безруков#Евгений#Сергеевич#0661122555#yyy@gmail.com
-REBISTRATION#Ботин#Станислав#Игоревич#0661122666#www@gmail.com
-REGISTRATION#Щербаков#Алексей#Сергеевич#0661122222#qqq@gmail.com
-REGISTRATION#Нурлан#Сабуров#Алибекович#0661122111#sss@gmail.com
-REGISTRATION#Азамат#Мусагалиев#Тахирович #0661122777#eee@gmail.com
+CREATE_NEW_USER#Перепелкин#Александр#Гришин#0661122333#zzz@gmail.com
+CREATE_NEW_USER#Стрельников#Владимир#Петров#0661122444#xxx@gmail.com
+CREATE_NEW_USER#Безруков#Евгений#Сергеевич#0661122555#yyy@gmail.com
+REGISTRATION#Ботин#Станислав#Игоревич#0661122666#www@gmail.com
+CREATE_NEW_USER#Щербаков#Алексей#Сергеевич#0661122222#qqq@gmail.com
+CREATE_NEW_USER#Нурлан#Сабуров#Алибекович#0661122111#sss@gmail.com
+CREATE_NEW_USER#Азамат#Мусагалиев#Тахирович #0661122777#eee@gmail.com
 CREATE_NEW_OFFICE#Улицы Пушкина#Находится возле того-то-того-то, вход там-то-там-то....
 CREATE_NEW_OFFICE#Дом Колотушкина#Находится возле того-то-того-то, вход там-сям....
 CREATE_NEW_OFFICE#Квартира Зефира#Находится возле того-то-того-то, вход то тут-то там....

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class MainCommandService {
 
     public void mapCommand(ArrayList<ArrayList<String>> commands) {
+        ArrayList<ArrayList<String>> usersRegistrationList = new ArrayList<>();
+        ArrayList<ArrayList<String>> parcelsRegistrationList = new ArrayList<>();
+        ArrayList<ArrayList<String>> officeRegistrationList = new ArrayList<>();
         FileToUserConverter fileToUserConverter = new FileToUserConverter();
         FileToOfficeConverter fileToOfficeConverter = new FileToOfficeConverter();
         FileToSendingParcelConverter fileToSendingParcelConverter = new FileToSendingParcelConverter();
@@ -21,15 +24,15 @@ public class MainCommandService {
                 switch (command) {
 
                     case "CREATE_NEW_OFFICE" -> {
-                        officeService.newOffice(fileToOfficeConverter.convert(commandsList));
+                        officeRegistrationList.add(commandsList);
                     }
 
-                    case "REGISTRATION" -> {
-                        userService.registration(fileToUserConverter.convert(commandsList));
+                    case "CREATE_NEW_USER" -> {
+                        usersRegistrationList.add(commandsList);
                     }
 
                     case "CREATE_NEW_PARCEL" -> {
-                        sendingParcelService.sending(fileToSendingParcelConverter.convert(commandsList));
+                        parcelsRegistrationList.add(commandsList);
                     }
                     default -> {
                         System.out.println("_____________________________________________________________________________________________________");
@@ -41,6 +44,9 @@ public class MainCommandService {
                 break;
             }
         }
+        userService.registration(fileToUserConverter.convert(usersRegistrationList));
+        officeService.newOffice(fileToOfficeConverter.convert(officeRegistrationList));
+        sendingParcelService.sending(fileToSendingParcelConverter.convert(parcelsRegistrationList));
     }
 }
 

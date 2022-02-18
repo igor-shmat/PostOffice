@@ -1,6 +1,5 @@
 package postoffice.entity;
 
-
 public class Users {
     private Long usersId;
     private String first_name;

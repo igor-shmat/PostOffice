@@ -7,14 +7,14 @@ import postoffice.entity.SendingParcel;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SendingParcelService {
-    public void sending(SendingParcel parcel){
-        try(Connection connection = ConnectionToDB.connect()) {
+    public void sending(ArrayList<SendingParcel> parcel) {
+        try (Connection connection = ConnectionToDB.connect()) {
             DAO<SendingParcel> dao = new SendingParcelDAO(connection);
             dao.create(parcel);
-            connection.close();
-            System.out.println("Parcel successfully registered!");
+            System.out.println("Parcels successfully registered!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

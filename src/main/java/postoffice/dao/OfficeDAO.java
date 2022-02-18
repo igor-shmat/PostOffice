@@ -6,20 +6,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class OfficeDAO implements DAO<Office> {
+    private Connection connection;
 
-
-    public OfficeDAO(Connection connect) {
+    public OfficeDAO(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public void create(Office office) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(OfficeDAO.SQLOffice.INSERT.QUERY)) {
-            statement.setString(1, office.getAddress());
-            statement.setString(2, office.getDescription());
-            statement.executeUpdate();
+    public void create(ArrayList<Office> offices) {
+        try (PreparedStatement statement = connection.prepareStatement(OfficeDAO.SQLOffice.INSERT.QUERY)) {
+            for (Office office : offices) {
+                statement.setString(1, office.getAddress());
+                statement.setString(2, office.getDescription());
+                statement.addBatch();
+            }
+            statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,7 +33,7 @@ public class OfficeDAO implements DAO<Office> {
     @Override
     public Office read(Office office) {
         Office result = new Office();
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(OfficeDAO.SQLOffice.GET.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(OfficeDAO.SQLOffice.GET.QUERY)) {
             statement.setString(1, office.getAddress());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -44,7 +49,7 @@ public class OfficeDAO implements DAO<Office> {
 
     @Override
     public void update(Office office) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(OfficeDAO.SQLOffice.UPDATE.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(OfficeDAO.SQLOffice.UPDATE.QUERY)) {
             statement.setString(1, office.getDescription());
             statement.setLong(2, office.getOfficeId());
         } catch (SQLException e) {

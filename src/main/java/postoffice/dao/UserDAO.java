@@ -10,19 +10,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserDAO implements DAO<Users> {
+    private Connection connection;
 
     public UserDAO(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public void create(Users users) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(UserDAO.SQLUser.INSERT.QUERY)) {
-            statement.setString(1, users.getFirst_name());
-            statement.setString(2, users.getSecond_name());
-            statement.setString(3, users.getPatronymic_name());
-            statement.setString(4, users.getEmail());
-            statement.setString(5, users.getPhoneNumber());
-            statement.executeUpdate();
+    public void create(ArrayList<Users> users) {
+        try (PreparedStatement statement = connection.prepareStatement(UserDAO.SQLUser.INSERT.QUERY)) {
+            for (Users user : users) {
+                statement.setString(1, user.getFirst_name());
+                statement.setString(2, user.getSecond_name());
+                statement.setString(3, user.getPatronymic_name());
+                statement.setString(4, user.getEmail());
+                statement.setString(5, user.getPhoneNumber());
+                statement.addBatch();
+            }
+            statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -32,7 +37,7 @@ public class UserDAO implements DAO<Users> {
     @Override
     public Users read(Users users) {
         Users result = new Users();
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.GET.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET.QUERY)) {
             statement.setString(1, users.getEmail());
             statement.setString(2, users.getPhoneNumber());
             ResultSet rs = statement.executeQuery();
@@ -52,7 +57,7 @@ public class UserDAO implements DAO<Users> {
 
     @Override
     public void update(Users users) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.UPDATE.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLUser.UPDATE.QUERY)) {
             statement.setString(1, users.getPhoneNumber());
             statement.setLong(2, users.getUsersId());
         } catch (SQLException e) {
@@ -62,7 +67,7 @@ public class UserDAO implements DAO<Users> {
 
     @Override
     public void delete(Users users) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLUser.DELETE.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLUser.DELETE.QUERY)) {
             statement.setLong(1, users.getUsersId());
         } catch (SQLException e) {
             e.printStackTrace();

@@ -5,10 +5,14 @@ import postoffice.entity.Office;
 import java.util.ArrayList;
 
 public class FileToOfficeConverter {
-    public Office convert(ArrayList<String> commandsList) {
-        Office office = new Office();
-        office.setAddress(commandsList.get(1));
-        office.setDescription(commandsList.get(2));
-        return office;
+    public ArrayList<Office> convert(ArrayList<ArrayList<String>> officeRegistrationList) {
+        ArrayList<Office> offices = new ArrayList<>();
+        for (ArrayList<String> commandList : officeRegistrationList) {
+            Office office = new Office();
+            office.setAddress(commandList.get(1));
+            office.setDescription(commandList.get(2));
+            offices.add(office);
+        }
+        return offices;
     }
 }

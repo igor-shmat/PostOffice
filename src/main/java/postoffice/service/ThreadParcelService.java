@@ -14,10 +14,14 @@ public class ThreadParcelService extends Thread {
     @Override
     public void run() {
         try {
+            while (checkNewParcels().isEmpty()) {
+                System.out.println("1");
+            }
             while (!checkNewParcels().isEmpty()) {
                 batchUpdate(checkNewParcels());
                 Thread.sleep(1000);
             }
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -35,8 +39,8 @@ public class ThreadParcelService extends Thread {
         return (ArrayList<SendingParcel>) parcels;
     }
 
-    private void batchUpdate(ArrayList<SendingParcel> parcels){
-        try(Connection connection = ConnectionToDB.connect()) {
+    private void batchUpdate(ArrayList<SendingParcel> parcels) {
+        try (Connection connection = ConnectionToDB.connect()) {
             SendingParcelDAO sendingParcelDAO = new SendingParcelDAO(connection);
             sendingParcelDAO.batchUpdate(parcels);
         } catch (SQLException e) {

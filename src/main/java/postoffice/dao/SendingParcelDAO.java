@@ -12,25 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendingParcelDAO implements DAO<SendingParcel> {
+    private Connection connection;
 
     public SendingParcelDAO(Connection connection) {
+        this.connection = connection;
     }
 
 
     @Override
-    public void create(SendingParcel parcel) {
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SendingParcelDAO.SQLParcel.INSERT.QUERY)) {
-            statement.setLong(1, parcel.getUsers().getUsersId());
-            statement.setLong(2, parcel.getSenderOffice().getOfficeId());
-            statement.setLong(3, parcel.getReceiverOffice().getOfficeId());
-            statement.setString(4, parcel.getReceiverPhoneNumber());
-            statement.setString(5, parcel.getReceiver_first_name());
-            statement.setString(6, parcel.getReceiver_second_name());
-            statement.setString(7, parcel.getReceiver_patronymic_name());
-            statement.setString(8, parcel.getParcelStatus().toString());
-            statement.setTimestamp(9, Timestamp.valueOf(parcel.getCreateDate()));
-            statement.setTimestamp(10, Timestamp.valueOf(parcel.getUpdateStatus()));
-            statement.executeUpdate();
+    public void create(ArrayList<SendingParcel> parcels) {
+        try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.INSERT.QUERY)) {
+            for (SendingParcel parcel : parcels) {
+                statement.setLong(1, parcel.getUsers().getUsersId());
+                statement.setLong(2, parcel.getSenderOffice().getOfficeId());
+                statement.setLong(3, parcel.getReceiverOffice().getOfficeId());
+                statement.setString(4, parcel.getReceiverPhoneNumber());
+                statement.setString(5, parcel.getReceiver_first_name());
+                statement.setString(6, parcel.getReceiver_second_name());
+                statement.setString(7, parcel.getReceiver_patronymic_name());
+                statement.setString(8, parcel.getParcelStatus().toString());
+                statement.setTimestamp(9, Timestamp.valueOf(parcel.getCreateDate()));
+                statement.setTimestamp(10, Timestamp.valueOf(parcel.getUpdateStatus()));
+                statement.addBatch();
+            }
+            statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,7 +45,7 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
     @Override
     public SendingParcel read(SendingParcel parcel) {
         SendingParcel result = new SendingParcel();
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SendingParcelDAO.SQLParcel.GET.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.GET.QUERY)) {
             statement.setLong(1, parcel.getParcelId());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -72,7 +77,7 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
 
     public List<SendingParcel> getNewParcels() {
         List<SendingParcel> parcelList = new ArrayList<>();
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SQLParcel.GET.QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLParcel.GET.QUERY)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 SendingParcel result = new SendingParcel();
@@ -95,13 +100,14 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
 
         return parcelList;
     }
-    public void batchUpdate(ArrayList<SendingParcel> parcels){
-        try (PreparedStatement statement = ConnectionToDB.connect().prepareStatement(SendingParcelDAO.SQLParcel.UPDATE.QUERY)) {
-            for(SendingParcel parcel : parcels) {
+
+    public void batchUpdate(ArrayList<SendingParcel> parcels) {
+        try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.UPDATE.QUERY)) {
+            for (SendingParcel parcel : parcels) {
                 parcel.setParcelStatus(ParcelStatus.generateRandomStatus());
                 statement.setString(1, String.valueOf(parcel.getParcelStatus()));
-                statement.setTimestamp(2,Timestamp.valueOf(LocalDateTime.now()));
-                statement.setLong(3,parcel.getParcelId());
+                statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setLong(3, parcel.getParcelId());
 
                 statement.addBatch();
             }

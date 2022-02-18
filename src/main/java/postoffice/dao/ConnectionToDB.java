@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionToDB {
-    private static Connection connection ;
-    public static Connection connect()  {
+    private volatile static Connection connection ;
+    public synchronized static Connection connect()  {
         try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "123");
         } catch (SQLException e) {
