@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 public class OfficeDAO implements DAO<Office> {
-    private Connection connection;
+    private final Connection connection;
 
     public OfficeDAO(Connection connection) {
         this.connection = connection;
@@ -31,15 +31,19 @@ public class OfficeDAO implements DAO<Office> {
     }
 
     @Override
-    public Office read(Office office) {
-        Office result = new Office();
+    public ArrayList<Office> read(ArrayList<Office> offices) {
+        ArrayList<Office> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(OfficeDAO.SQLOffice.GET.QUERY)) {
-            statement.setString(1, office.getAddress());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                result.setOfficeId(rs.getLong("office_id"));
-                result.setAddress(rs.getString("address"));
-                result.setDescription(rs.getString("description"));
+            for (Office office:offices ) {
+                statement.setString(1, office.getAddress());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    Office off = new Office();
+                    off.setOfficeId(rs.getLong("office_id"));
+                    off.setAddress(rs.getString("address"));
+                    off.setDescription(rs.getString("description"));
+                    result.add(off);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

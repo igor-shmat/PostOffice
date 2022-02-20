@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserDAO implements DAO<Users> {
-    private Connection connection;
+    private final Connection connection;
 
     public UserDAO(Connection connection) {
         this.connection = connection;
@@ -32,27 +32,51 @@ public class UserDAO implements DAO<Users> {
         }
 
     }
-
     @Override
-    public Users read(Users users) {
-        Users result = new Users();
+    public ArrayList<Users> read(ArrayList<Users> users) {
+        ArrayList<Users> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET.QUERY)) {
-            statement.setString(1, users.getEmail());
-            statement.setString(2, users.getPhoneNumber());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                result.setUsersId(rs.getLong("users_id"));
-                result.setPhoneNumber(rs.getString("phone_number"));
-                result.setEmail(rs.getString("email"));
-                result.setFirst_name(rs.getString("first_name"));
-                result.setSecond_name(rs.getString("second_name"));
-                result.setPatronymic_name(rs.getString("patronymic_name"));
+            for (Users user:users) {
+                statement.setString(1, user.getEmail());
+                statement.setString(2, user.getPhoneNumber());
+                ResultSet rs = statement.executeQuery();
+                while (rs.next()) {
+                    Users us = new Users();
+                    us.setUsersId(rs.getLong("users_id"));
+                    us.setPhoneNumber(rs.getString("phone_number"));
+                    us.setEmail(rs.getString("email"));
+                    us.setFirst_name(rs.getString("first_name"));
+                    us.setSecond_name(rs.getString("second_name"));
+                    us.setPatronymic_name(rs.getString("patronymic_name"));
+                    result.add(us);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
+
+//    public Users read(Users users) {
+//        Users result = new Users();
+//        try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET.QUERY)) {
+//            statement.setString(1, users.getEmail());
+//            statement.setString(2, users.getPhoneNumber());
+//            ResultSet rs = statement.executeQuery();
+//            if (rs.next()) {
+//                result.setUsersId(rs.getLong("users_id"));
+//                result.setPhoneNumber(rs.getString("phone_number"));
+//                result.setEmail(rs.getString("email"));
+//                result.setFirst_name(rs.getString("first_name"));
+//                result.setSecond_name(rs.getString("second_name"));
+//                result.setPatronymic_name(rs.getString("patronymic_name"));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
+
 
     @Override
     public void update(Users users) {

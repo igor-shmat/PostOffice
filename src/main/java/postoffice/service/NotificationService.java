@@ -1,7 +1,6 @@
 package postoffice.service;
 
 import postoffice.dao.ConnectionToDB;
-import postoffice.dao.DAO;
 import postoffice.dao.NotificationDAO;
 import postoffice.entity.Notification;
 import postoffice.entity.SendingParcel;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class NotificationService {
-    public void batchCreateNotification(ArrayList<SendingParcel> parcels) {
+    public void createNotification(ArrayList<SendingParcel> parcels) {
         try (Connection connection = ConnectionToDB.connect()) {
             NotificationDAO notificationDAO = new NotificationDAO(connection);
             ArrayList<Notification> notifications = new ArrayList<>();

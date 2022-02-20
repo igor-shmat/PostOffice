@@ -7,24 +7,32 @@ import postoffice.entity.Users;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserService {
-    public void registration(ArrayList<Users> users) {
-        try(Connection connection = ConnectionToDB.connect()) {
+    public void createNewUser(ArrayList<Users> users) {
+        try (Connection connection = ConnectionToDB.connect()) {
             DAO<Users> dao = new UserDAO(connection);
-            ArrayList<Users> clearUsers = new ArrayList<>();
-            for(Users user:users) {
-                if (dao.read(user).getUsersId() == null) {
-                    clearUsers.add(user);
-
-                } else
-                    System.out.println("User with email : " + "->" + user.getEmail() + "<-" + " already exists!");
+            ArrayList<Users> uniqueUsers = new ArrayList<>();
+            ArrayList<Users> usersFromDB = dao.read(users);
+            if (usersFromDB.isEmpty()) {
+                dao.create(users);
+            } else {
+                ListIterator<Users> lstr = users.listIterator();
+                while (lstr.hasNext()) {
+                    Users nextUser = lstr.next();
+                    if (usersFromDB.contains(nextUser)) {
+                        System.out.println("User with email : " + "->" + nextUser.getEmail() + "<-" + " already exists!");
+                        lstr.remove();
+                    } else {
+                        uniqueUsers.add(nextUser);
+                    }
+                }
+                if (!uniqueUsers.isEmpty()) {
+                    dao.create(uniqueUsers);
+                }
             }
-            if (!clearUsers.isEmpty()) {
-                dao.create(clearUsers);
-            }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

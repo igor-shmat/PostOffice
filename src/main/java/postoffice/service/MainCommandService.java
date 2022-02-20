@@ -44,8 +44,8 @@ public class MainCommandService {
                 break;
             }
         }
-        userService.registration(fileToUserConverter.convert(usersRegistrationList));
-        officeService.newOffice(fileToOfficeConverter.convert(officeRegistrationList));
+        userService.createNewUser(fileToUserConverter.convert(usersRegistrationList));
+        officeService.createNewOffice(fileToOfficeConverter.convert(officeRegistrationList));
         sendingParcelService.sending(fileToSendingParcelConverter.convert(parcelsRegistrationList));
     }
 }

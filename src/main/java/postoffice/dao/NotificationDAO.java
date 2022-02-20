@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class NotificationDAO {
-    private Connection connection;
+    private final Connection connection;
 
     public NotificationDAO(Connection connection) {
         this.connection = connection;

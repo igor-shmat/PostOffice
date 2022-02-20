@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class SendingParcelService {
     public void sending(ArrayList<SendingParcel> parcel) {
         try (Connection connection = ConnectionToDB.connect()) {
-            DAO<SendingParcel> dao = new SendingParcelDAO(connection);
-            dao.create(parcel);
+            DAO<SendingParcel> DAO = new SendingParcelDAO(connection);
+            DAO.create(parcel);
             System.out.println("Parcels successfully registered!");
         } catch (SQLException e) {
             e.printStackTrace();

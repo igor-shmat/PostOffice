@@ -1,5 +1,7 @@
 package postoffice.entity;
 
+import java.util.Objects;
+
 public class Users {
     private Long usersId;
     private String first_name;
@@ -61,5 +63,18 @@ public class Users {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users1 = (Users) o;
+        return Objects.equals(phoneNumber, users1.phoneNumber) && Objects.equals(email, users1.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phoneNumber, email);
     }
 }

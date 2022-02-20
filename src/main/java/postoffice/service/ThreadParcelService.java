@@ -10,19 +10,16 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadParcelService extends Thread {
     @Override
     public void run() {
-
         try {
-
             while (checkNewParcels().isEmpty()) {
-                System.out.println(Thread.currentThread().getName() +" waiting!");
+                System.out.println(Thread.currentThread().getName() + " waiting!");
             }
-            System.out.println(Thread.currentThread().getName() +" start!");
+            System.out.println(Thread.currentThread().getName() + " start!");
 
             while (!checkNewParcels().isEmpty()) {
                 Long startTime = System.currentTimeMillis();
@@ -30,24 +27,23 @@ public class ThreadParcelService extends Thread {
                 ArrayList<SendingParcel> parcels = checkNewParcels();
                 Long endCheck = System.currentTimeMillis();
                 Long delayCheck = endCheck - startCheck;
-                for(SendingParcel parcel: parcels){
+
+                for (SendingParcel parcel : parcels) {
                     parcel.setParcelStatus(ParcelStatus.generateRandomStatus());
                     LocalDateTime start = parcel.getUpdateStatus();
                     LocalDateTime end = parcel.getCreateDate();
-                    Duration duration = Duration.between(end,start);
+                    Duration duration = Duration.between(end, start);
                     Long time = TimeUnit.MILLISECONDS.convert(duration);
-                    System.out.println(time);
-                    if(time > 4000){
+                    if (time > 4000) {
                         parcel.setParcelStatus(ParcelStatus.OVERDUE);
-
                     }
                 }
                 batchUpdateParcel(parcels);
                 NotificationService notificationService = new NotificationService();
-                notificationService.batchCreateNotification(parcels);
+                notificationService.createNotification(parcels);
                 Long endTime = System.currentTimeMillis();
-                Long delay =endTime - startTime;
-                Thread.sleep(1000-delay-delayCheck);
+                Long delay = endTime - startTime;
+                Thread.sleep(1000 - delay - delayCheck);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -55,15 +51,16 @@ public class ThreadParcelService extends Thread {
     }
 
     private ArrayList<SendingParcel> checkNewParcels() throws InterruptedException {
-        List<SendingParcel> parcels = null;
+        ArrayList<SendingParcel> parcels = null;
+        ArrayList<SendingParcel> pp = new ArrayList<>();
         try (Connection connection = ConnectionToDB.connect()) {
             SendingParcelDAO sendingParcelDAO = new SendingParcelDAO(connection);
-            parcels = sendingParcelDAO.getNewParcels();
+            parcels = sendingParcelDAO.read(pp);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return (ArrayList<SendingParcel>) parcels;
+        return parcels;
     }
 
     private void batchUpdateParcel(ArrayList<SendingParcel> parcels) {

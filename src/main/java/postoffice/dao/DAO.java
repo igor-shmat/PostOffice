@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public interface DAO<Entity> {
     void create(ArrayList<Entity> entity);
 
-    Entity read(Entity entity);
+    ArrayList<Entity> read(ArrayList<Entity> entity);
 
     void update(Entity entity);
 

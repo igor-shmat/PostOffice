@@ -1,5 +1,7 @@
 package postoffice.entity;
 
+import java.util.Objects;
+
 public class Office {
     private Long officeId;
     private String address;
@@ -34,5 +36,18 @@ public class Office {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Office office = (Office) o;
+        return Objects.equals(address, office.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address);
     }
 }
