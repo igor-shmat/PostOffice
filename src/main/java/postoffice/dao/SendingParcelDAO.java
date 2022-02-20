@@ -104,7 +104,7 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
     public void batchUpdate(ArrayList<SendingParcel> parcels) {
         try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.UPDATE.QUERY)) {
             for (SendingParcel parcel : parcels) {
-                parcel.setParcelStatus(ParcelStatus.generateRandomStatus());
+
                 statement.setString(1, String.valueOf(parcel.getParcelStatus()));
                 statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
                 statement.setLong(3, parcel.getParcelId());

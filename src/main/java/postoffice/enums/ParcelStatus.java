@@ -7,7 +7,7 @@ public enum ParcelStatus {
 
     public static ParcelStatus generateRandomStatus() {
         Double rand = Math.random();
-        if (rand <= 0.40) {
+        if (rand <= 0.80) {
             return NEW;
         } else
             return DELIVERED;

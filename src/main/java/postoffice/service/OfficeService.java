@@ -3,9 +3,7 @@ package postoffice.service;
 import postoffice.dao.ConnectionToDB;
 import postoffice.dao.DAO;
 import postoffice.dao.OfficeDAO;
-import postoffice.dao.UserDAO;
 import postoffice.entity.Office;
-import postoffice.entity.Users;
 
 import java.sql.Connection;
 import java.sql.SQLException;

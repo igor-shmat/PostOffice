@@ -2,7 +2,6 @@ package postoffice.dao;
 
 import postoffice.entity.Users;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
