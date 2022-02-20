@@ -67,29 +67,6 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
         return parcelList;
     }
 
-//        SendingParcel result = new SendingParcel();
-//        try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.GET.QUERY)) {
-//            statement.setLong(1, parcel.getParcelId());
-//            ResultSet rs = statement.executeQuery();
-//            if (rs.next()) {
-//                result.setParcelId(rs.getLong("parcel_id"));
-//                result.setUsers(new Users(rs.getLong("users_id")));
-//                result.setSenderOffice(new Office(rs.getLong("sender_office_id")));
-//                result.setReceiverOffice(new Office(rs.getLong("receiver_office_id")));
-//                result.setReceiverPhoneNumber(rs.getString("receiver_phone_number"));
-//                result.setReceiver_first_name(rs.getString("receiver_first_name"));
-//                result.setReceiver_second_name(rs.getString("receiver_second_name"));
-//                result.setReceiver_patronymic_name(rs.getString("receiver_patronymic_name"));
-//                result.setParcelStatus(ParcelStatus.valueOf(rs.getString("parcel_status")));
-//                result.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
-//                result.setUpdateStatus(rs.getTimestamp("update_status").toLocalDateTime());
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
-
     @Override
     public void update(SendingParcel parcel) {
     }
@@ -98,31 +75,31 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
     public void delete(SendingParcel parcel) {
     }
 
-//    public ArrayList<SendingParcel> getNewParcels() {
-//        List<SendingParcel> parcelList = new ArrayList<>();
-//        try (PreparedStatement statement = connection.prepareStatement(SQLParcel.GET.QUERY)) {
-//            ResultSet rs = statement.executeQuery();
-//            while (rs.next()) {
-//                SendingParcel result = new SendingParcel();
-//                result.setParcelId(rs.getLong("parcel_id"));
-//                result.setUsers(new Users(rs.getLong("users_id")));
-//                result.setSenderOffice(new Office(rs.getLong("sender_office_id")));
-//                result.setReceiverOffice(new Office(rs.getLong("receiver_office_id")));
-//                result.setReceiverPhoneNumber(rs.getString("receiver_phone_number"));
-//                result.setReceiver_first_name(rs.getString("receiver_first_name"));
-//                result.setReceiver_second_name(rs.getString("receiver_second_name"));
-//                result.setReceiver_patronymic_name(rs.getString("receiver_patronymic_name"));
-//                result.setParcelStatus(ParcelStatus.valueOf(rs.getString("parcel_status")));
-//                result.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
-//                result.setUpdateStatus(rs.getTimestamp("update_status").toLocalDateTime());
-//                parcelList.add(result);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return parcelList;
-//    }
+    public ArrayList<SendingParcel> getAllParcels() {
+        ArrayList<SendingParcel> parcelList = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQLParcel.GET_ALL.QUERY)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                SendingParcel result = new SendingParcel();
+                result.setParcelId(rs.getLong("parcel_id"));
+                result.setUsers(new Users(rs.getLong("users_id")));
+                result.setSenderOffice(new Office(rs.getLong("sender_office_id")));
+                result.setReceiverOffice(new Office(rs.getLong("receiver_office_id")));
+                result.setReceiverPhoneNumber(rs.getString("receiver_phone_number"));
+                result.setReceiver_first_name(rs.getString("receiver_first_name"));
+                result.setReceiver_second_name(rs.getString("receiver_second_name"));
+                result.setReceiver_patronymic_name(rs.getString("receiver_patronymic_name"));
+                result.setParcelStatus(ParcelStatus.valueOf(rs.getString("parcel_status")));
+                result.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
+                result.setUpdateStatus(rs.getTimestamp("update_status").toLocalDateTime());
+                parcelList.add(result);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return parcelList;
+    }
 
     public void batchUpdate(ArrayList<SendingParcel> parcels) {
         try (PreparedStatement statement = connection.prepareStatement(SendingParcelDAO.SQLParcel.UPDATE.QUERY)) {
@@ -144,6 +121,7 @@ public class SendingParcelDAO implements DAO<SendingParcel> {
     enum SQLParcel {
         INSERT("INSERT INTO mono_post.sending_parcel (parcel_id, users_id, sender_office_id, receiver_office_id, receiver_phone_number, receiver_first_name, receiver_second_name, receiver_patronymic_name, parcel_status, create_date, update_status) VALUES (DEFAULT, (?), (?), (?), (?), (?), (?), (?), (?), (?), (?))"),
         GET("SELECT * FROM mono_post.sending_parcel  WHERE parcel_status = 'NEW'"),
+        GET_ALL("SELECT * FROM mono_post.sending_parcel order by parcel_id"),
         UPDATE("UPDATE mono_post.sending_parcel SET parcel_status = (?), update_status = (?) WHERE parcel_status = 'NEW' and parcel_id = (?)"),
         DELETE("DELETE FROM mono_post.sending_parcel WHERE users_id = (?)");
 

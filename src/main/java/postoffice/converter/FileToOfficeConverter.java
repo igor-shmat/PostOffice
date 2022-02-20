@@ -4,7 +4,10 @@ import postoffice.entity.Office;
 
 import java.util.ArrayList;
 
-public class FileToOfficeConverter {
+
+public class FileToOfficeConverter implements Convertor<Office> {
+
+    @Override
     public ArrayList<Office> convert(ArrayList<ArrayList<String>> officeRegistrationList) {
         ArrayList<Office> offices = new ArrayList<>();
         for (ArrayList<String> commandList : officeRegistrationList) {

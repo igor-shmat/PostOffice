@@ -32,11 +32,12 @@ public class UserDAO implements DAO<Users> {
         }
 
     }
+
     @Override
     public ArrayList<Users> read(ArrayList<Users> users) {
         ArrayList<Users> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET.QUERY)) {
-            for (Users user:users) {
+            for (Users user : users) {
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getPhoneNumber());
                 ResultSet rs = statement.executeQuery();
@@ -57,26 +58,26 @@ public class UserDAO implements DAO<Users> {
         return result;
     }
 
-//    public Users read(Users users) {
-//        Users result = new Users();
-//        try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET.QUERY)) {
-//            statement.setString(1, users.getEmail());
-//            statement.setString(2, users.getPhoneNumber());
-//            ResultSet rs = statement.executeQuery();
-//            if (rs.next()) {
-//                result.setUsersId(rs.getLong("users_id"));
-//                result.setPhoneNumber(rs.getString("phone_number"));
-//                result.setEmail(rs.getString("email"));
-//                result.setFirst_name(rs.getString("first_name"));
-//                result.setSecond_name(rs.getString("second_name"));
-//                result.setPatronymic_name(rs.getString("patronymic_name"));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
+    public ArrayList<Users> getAllUsers() {
+        ArrayList<Users> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQLUser.GET_ALL.QUERY)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Users us = new Users();
+                us.setUsersId(rs.getLong("users_id"));
+                us.setPhoneNumber(rs.getString("phone_number"));
+                us.setEmail(rs.getString("email"));
+                us.setFirst_name(rs.getString("first_name"));
+                us.setSecond_name(rs.getString("second_name"));
+                us.setPatronymic_name(rs.getString("patronymic_name"));
+                result.add(us);
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @Override
     public void update(Users users) {
@@ -97,10 +98,10 @@ public class UserDAO implements DAO<Users> {
         }
     }
 
-
     enum SQLUser {
         INSERT("INSERT INTO mono_post.users (users_id, first_name, second_name, patronymic_name, email, phone_number) VALUES (DEFAULT, (?), (?), (?), (?), (?))"),
         GET("SELECT * FROM mono_post.users  WHERE email = (?) and phone_number = (?)"),
+        GET_ALL("SELECT * FROM mono_post.users order by users_id"),
         UPDATE("UPDATE mono_post.users SET phone_number = (?) WHERE users_id = (?)"),
         DELETE("DELETE FROM mono_post.users WHERE users_id = (?)");
 

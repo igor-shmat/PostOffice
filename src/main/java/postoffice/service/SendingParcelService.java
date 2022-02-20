@@ -10,13 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SendingParcelService {
-    public void sending(ArrayList<SendingParcel> parcel) {
+    public void createNewParcels(ArrayList<SendingParcel> parcel) {
         try (Connection connection = ConnectionToDB.connect()) {
-            DAO<SendingParcel> DAO = new SendingParcelDAO(connection);
-            DAO.create(parcel);
+            DAO<SendingParcel> dao = new SendingParcelDAO(connection);
+            dao.create(parcel);
             System.out.println("Parcels successfully registered!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public ArrayList<SendingParcel> getAllParcels(){
+        ArrayList<SendingParcel>parcels = null;
+        try (Connection connection = ConnectionToDB.connect()) {
+            SendingParcelDAO dao = new SendingParcelDAO(connection);
+            parcels = dao.getAllParcels();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parcels;
     }
 }

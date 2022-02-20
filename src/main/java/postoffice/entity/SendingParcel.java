@@ -104,4 +104,21 @@ public class SendingParcel {
     public void setUpdateStatus(LocalDateTime updateStatus) {
         this.updateStatus = updateStatus;
     }
+
+    @Override
+    public String toString() {
+        return "SendingParcel{" +
+                "parcelId=" + parcelId +
+                ", users=" + users +
+                ", senderOffice=" + senderOffice +
+                ", receiverOffice=" + receiverOffice +
+                ", receiverPhoneNumber='" + receiverPhoneNumber + '\'' +
+                ", receiver_first_name='" + receiver_first_name + '\'' +
+                ", receiver_second_name='" + receiver_second_name + '\'' +
+                ", receiver_patronymic_name='" + receiver_patronymic_name + '\'' +
+                ", parcelStatus=" + parcelStatus +
+                ", createDate=" + createDate +
+                ", updateStatus=" + updateStatus +
+                '}';
+    }
 }

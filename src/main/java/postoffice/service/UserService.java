@@ -8,7 +8,7 @@ import postoffice.entity.Users;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class UserService {
     public void createNewUser(ArrayList<Users> users) {
@@ -36,5 +36,16 @@ public class UserService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Users> getAllUsers() {
+        ArrayList<Users> parcels = null;
+        try (Connection connection = ConnectionToDB.connect()) {
+            UserDAO dao = new UserDAO(connection);
+            parcels = dao.getAllUsers();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parcels;
     }
 }

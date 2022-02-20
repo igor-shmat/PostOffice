@@ -50,4 +50,13 @@ public class Office {
     public int hashCode() {
         return Objects.hash(address);
     }
+
+    @Override
+    public String toString() {
+        return "Office{" +
+                "officeId=" + officeId +
+                ", address='" + address + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

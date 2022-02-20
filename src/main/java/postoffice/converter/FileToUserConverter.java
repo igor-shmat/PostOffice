@@ -4,10 +4,12 @@ import postoffice.entity.Users;
 
 import java.util.ArrayList;
 
-public class FileToUserConverter {
-    public ArrayList<Users> convert(ArrayList<ArrayList<String>> usersRegistrationList) {
+public class FileToUserConverter implements Convertor<Users> {
+
+    @Override
+    public ArrayList<Users> convert(ArrayList<ArrayList<String>> commandsList) {
         ArrayList<Users> users = new ArrayList<>();
-        for (ArrayList<String> commandList : usersRegistrationList) {
+        for (ArrayList<String> commandList : commandsList) {
             Users user = new Users();
             user.setFirst_name(commandList.get(1));
             user.setSecond_name(commandList.get(2));

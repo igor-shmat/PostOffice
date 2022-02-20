@@ -8,7 +8,9 @@ import postoffice.enums.ParcelStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class FileToSendingParcelConverter {
+public class FileToSendingParcelConverter implements Convertor<SendingParcel> {
+
+    @Override
     public ArrayList<SendingParcel> convert(ArrayList<ArrayList<String>> parcelsRegistrationList) {
         ArrayList<SendingParcel> parcels = new ArrayList<>();
         for (ArrayList<String> commandList : parcelsRegistrationList) {

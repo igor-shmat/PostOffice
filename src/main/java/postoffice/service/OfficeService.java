@@ -3,6 +3,7 @@ package postoffice.service;
 import postoffice.dao.ConnectionToDB;
 import postoffice.dao.DAO;
 import postoffice.dao.OfficeDAO;
+import postoffice.dao.UserDAO;
 import postoffice.entity.Office;
 import postoffice.entity.Users;
 
@@ -37,6 +38,16 @@ public class OfficeService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public ArrayList<Office> getAllOffices(){
+        ArrayList<Office>parcels = null;
+        try (Connection connection = ConnectionToDB.connect()) {
+            OfficeDAO dao = new OfficeDAO(connection);
+            parcels = dao.getAllOffices();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return parcels;
     }
 }
