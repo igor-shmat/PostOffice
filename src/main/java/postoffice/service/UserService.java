@@ -14,25 +14,16 @@ public class UserService {
     public void createNewUser(ArrayList<Users> users) {
         try (Connection connection = ConnectionToDB.connect()) {
             DAO<Users> dao = new UserDAO(connection);
-            ArrayList<Users> uniqueUsers = new ArrayList<>();
             ArrayList<Users> usersFromDB = dao.read(users);
-            if (usersFromDB.isEmpty()) {
-                dao.create(users);
-            } else {
-                ListIterator<Users> lstr = users.listIterator();
-                while (lstr.hasNext()) {
-                    Users nextUser = lstr.next();
-                    if (usersFromDB.contains(nextUser)) {
-                        System.out.println("User with email : " + "->" + nextUser.getEmail() + "<-" + " already exists!");
-                        lstr.remove();
-                    } else {
-                        uniqueUsers.add(nextUser);
-                    }
-                }
-                if (!uniqueUsers.isEmpty()) {
-                    dao.create(uniqueUsers);
-                }
+            for (Users user : usersFromDB) {
+                users.removeIf(users1 -> users1.getPhoneNumber().equals(user.getPhoneNumber()) || users1.getEmail().equals(user.getEmail()));
             }
+            if (!users.isEmpty()) {
+                dao.create(users);
+            }
+            usersFromDB.forEach(us -> {
+                System.out.println("User with this email : " + "->" + us.getEmail() + "<-" + " or this number : " + "->" + us.getPhoneNumber() + "<-" + " already exists!");
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         }

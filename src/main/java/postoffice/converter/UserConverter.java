@@ -4,10 +4,10 @@ import postoffice.entity.Users;
 
 import java.util.ArrayList;
 
-public class FileToUserConverter implements Convertor<Users> {
+public class UserConverter implements Convertor<Users> {
 
     @Override
-    public ArrayList<Users> convert(ArrayList<ArrayList<String>> commandsList) {
+    public ArrayList<Users> convertToEntity(ArrayList<ArrayList<String>> commandsList) {
         ArrayList<Users> users = new ArrayList<>();
         for (ArrayList<String> commandList : commandsList) {
             Users user = new Users();

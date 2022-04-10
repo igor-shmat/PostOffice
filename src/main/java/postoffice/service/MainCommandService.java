@@ -1,9 +1,10 @@
 package postoffice.service;
 
 import postoffice.converter.Convertor;
-import postoffice.converter.FileToOfficeConverter;
-import postoffice.converter.FileToSendingParcelConverter;
-import postoffice.converter.FileToUserConverter;
+import postoffice.converter.OfficeConverter;
+import postoffice.converter.SendingParcelConverter;
+import postoffice.converter.UserConverter;
+import postoffice.dto.SendingParcels;
 import postoffice.entity.Office;
 import postoffice.entity.SendingParcel;
 import postoffice.entity.Users;
@@ -13,15 +14,16 @@ import java.util.ArrayList;
 public class MainCommandService {
 
     public void mapCommand(ArrayList<ArrayList<String>> commands) {
-        ArrayList<SendingParcel> parcelsList = new ArrayList<>();
+        ArrayList<SendingParcels> parcelsList = new ArrayList<>();
         ArrayList<Users> usersList = new ArrayList<>();
         ArrayList<Office> officesList = new ArrayList<>();
         ArrayList<ArrayList<String>> usersRegistrationList = new ArrayList<>();
         ArrayList<ArrayList<String>> parcelsRegistrationList = new ArrayList<>();
         ArrayList<ArrayList<String>> officeRegistrationList = new ArrayList<>();
-        Convertor<Users> users = new FileToUserConverter();
-        Convertor<Office> offices = new FileToOfficeConverter();
-        Convertor<SendingParcel> parcels = new FileToSendingParcelConverter();
+        Convertor<Users> users = new UserConverter();
+        Convertor<Office> offices = new OfficeConverter();
+        Convertor<SendingParcel> parcels = new SendingParcelConverter();
+        SendingParcelConverter sendingParcelConverter = new SendingParcelConverter();
         SendingParcelService sendingParcelService = new SendingParcelService();
         UserService userService = new UserService();
         OfficeService officeService = new OfficeService();
@@ -43,7 +45,7 @@ public class MainCommandService {
                     }
 
                     case "GET_ALL_PARCELS" -> {
-                        parcelsList.addAll(sendingParcelService.getAllParcels());
+                        parcelsList.addAll(sendingParcelConverter.convertToDTO(sendingParcelService.getAllParcels()));
                     }
 
                     case "GET_ALL_USERS" -> {
@@ -64,11 +66,14 @@ public class MainCommandService {
                 break;
             }
         }
-        userService.createNewUser(users.convert(usersRegistrationList));
-        officeService.createNewOffice(offices.convert(officeRegistrationList));
-        sendingParcelService.createNewParcels(parcels.convert(parcelsRegistrationList));
+        userService.createNewUser(users.convertToEntity(usersRegistrationList));
+        officeService.createNewOffice(offices.convertToEntity(officeRegistrationList));
+        sendingParcelService.createNewParcels(parcels.convertToEntity(parcelsRegistrationList));
+        System.out.println("ALL PARCELS");
         parcelsList.forEach(System.out::println);
+        System.out.println("ALL USERS");
         usersList.forEach(System.out::println);
+        System.out.println("ALL OFFICES");
         officesList.forEach(System.out::println);
     }
 }

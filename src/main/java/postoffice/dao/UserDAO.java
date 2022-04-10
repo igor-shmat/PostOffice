@@ -100,7 +100,7 @@ public class UserDAO implements DAO<Users> {
 
     enum SQLUser {
         INSERT("INSERT INTO mono_post.users (users_id, first_name, second_name, patronymic_name, email, phone_number) VALUES (DEFAULT, (?), (?), (?), (?), (?))"),
-        GET("SELECT * FROM mono_post.users  WHERE email = (?) and phone_number = (?)"),
+        GET("SELECT * FROM mono_post.users  WHERE email = (?) or phone_number = (?)"),
         GET_ALL("SELECT * FROM mono_post.users order by users_id"),
         UPDATE("UPDATE mono_post.users SET phone_number = (?) WHERE users_id = (?)"),
         DELETE("DELETE FROM mono_post.users WHERE users_id = (?)");

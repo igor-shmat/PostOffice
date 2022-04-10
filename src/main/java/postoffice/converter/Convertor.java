@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface Convertor<Entity> {
 
-    ArrayList<Entity> convert(ArrayList<ArrayList<String>> string);
+    ArrayList<Entity> convertToEntity(ArrayList<ArrayList<String>> string);
 
 }
